@@ -5,10 +5,12 @@ date: "May 21, 2017"
 output: html_document
 ---
 
-##Introduction
+**Introduction**
+
 Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement - a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways.
 
-##Data
+**Data**
+
 Training: https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv
 
 Testing: https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv
@@ -21,7 +23,7 @@ library(rpart)
 library(gbm)
 ```
 
-##Import Data
+**Import Data**
 
 ```{r message=FALSE, warning=FALSE}
 Train <- read.csv("pml-training.csv", na.strings=c("NA",""), strip.white=T)
@@ -35,7 +37,7 @@ Testing <- Train[-Partition,]
 dim(Training); dim(Testing)
 ```
 
-##Data Cleansing
+**Data Cleansing**
 
 Remove variables that contained mostly NA
 
@@ -53,10 +55,11 @@ Testing  <- Testing[, -(1:7)]
 dim(Training) ; dim(Testing)
 ```
 
-##Model Building
+**Model Building**
+
 Three models will be run to compare the accuracy.
 
-**Random Forest**
+**1. Random Forest**
 ```{r message=FALSE, warning=FALSE}
 set.seed(100)
 cv <- trainControl(method="cv", number=3)
@@ -65,7 +68,7 @@ predict_rf <- predict(model_rf, Testing)
 confusionMatrix(predict_rf,Testing$classe)
 ```
 
-**Decision Tree**
+**2. Decision Tree**
 ```{r message=FALSE, warning=FALSE}
 set.seed(100)
 model_tree <- train(classe~ . , data = Training, method="rpart")
@@ -73,7 +76,7 @@ predict_tree <- predict(model_tree, Testing)
 confusionMatrix(predict_tree,Testing$classe)
 ```
 
-**Gradient Boosting Model**
+**3. Gradient Boosting Model**
 ```{r message=FALSE, warning=FALSE}
 set.seed(100)
 controlGBM <- trainControl(method = "repeatedcv", number = 5, repeats = 1)
@@ -86,6 +89,7 @@ confusionMatrix(predict_gbm,Testing$classe)
 ```
 
 Comparison of models accuracy
+
 ```{r message=FALSE, warning=FALSE}
 confusionMatrix(predict_rf, Testing$classe)$overall[1]
 confusionMatrix(predict_tree, Testing$classe)$overall[1]
