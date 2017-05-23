@@ -14,7 +14,7 @@ Training: https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv
 Testing: https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv
 
 **Dependency**
-```{r results='hide', message=FALSE, warning=FALSE}
+```r
 library(caret)
 library(randomForest)
 library(rpart)
@@ -23,7 +23,7 @@ library(gbm)
 
 ##Import Data
 
-```{r message=FALSE, warning=FALSE}
+```r
 Train <- read.csv("pml-training.csv", na.strings=c("NA",""), strip.white=T)
 
 Valid <- read.csv("pml-testing.csv", na.strings=c("NA",""), strip.white=T)
